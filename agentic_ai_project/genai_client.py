@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING
 
 from google import genai
 
-from .config import Settings
 from .validation import validate_non_empty_string
+
+if TYPE_CHECKING:
+    from .config import Settings
 
 
 class GenAIClient:
@@ -14,8 +16,8 @@ class GenAIClient:
         self,
         settings: Settings,
         *,
-        client: Optional[genai.Client] = None,
-        logger: Optional[logging.Logger] = None,
+        client: genai.Client | None = None,
+        logger: logging.Logger | None = None,
     ) -> None:
         self._settings = settings
         self._logger = logger or logging.getLogger("agentic_ai_project.genai")
@@ -25,8 +27,8 @@ class GenAIClient:
         self,
         prompt: str,
         *,
-        model: Optional[str] = None,
-        system_instruction: Optional[str] = None,
+        model: str | None = None,
+        system_instruction: str | None = None,
     ) -> str:
         validated_prompt = validate_non_empty_string(prompt, "prompt")
         model_name = model or self._settings.model

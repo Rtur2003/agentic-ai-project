@@ -4,7 +4,6 @@ import logging
 import os
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Optional
 
 from dotenv import load_dotenv
 
@@ -18,7 +17,7 @@ class Settings:
     log_level: str = "INFO"
 
 
-def _resolve_log_level(level: Optional[str]) -> int:
+def _resolve_log_level(level: str | None) -> int:
     if not level:
         return logging.INFO
     try:
@@ -28,7 +27,7 @@ def _resolve_log_level(level: Optional[str]) -> int:
         return getattr(logging, normalized, logging.INFO)
 
 
-def configure_logging(level: Optional[str] = None) -> logging.Logger:
+def configure_logging(level: str | None = None) -> logging.Logger:
     resolved_level = _resolve_log_level(level or os.getenv("LOG_LEVEL"))
     logging.basicConfig(
         level=resolved_level,
@@ -50,4 +49,3 @@ def get_settings() -> Settings:
 
     log_level = os.getenv("LOG_LEVEL", "INFO")
     return Settings(api_key=api_key, model=model, log_level=log_level)
-

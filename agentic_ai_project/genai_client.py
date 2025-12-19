@@ -32,6 +32,10 @@ class GenAIClient:
     ) -> str:
         validated_prompt = validate_non_empty_string(prompt, "prompt")
         model_name = model or self._settings.model
+        if model:
+            from .validation import validate_model_name
+
+            model_name = validate_model_name(model)
         try:
             response = self._client.responses.generate(
                 model=model_name,

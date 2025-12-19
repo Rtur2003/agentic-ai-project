@@ -1,0 +1,13 @@
+README.md
+pyproject.toml
+agentic_ai_project/__init__.py
+agentic_ai_project/cli.py
+agentic_ai_project/config.py
+agentic_ai_project/genai_client.py
+agentic_ai_project.egg-info/PKG-INFO
+agentic_ai_project.egg-info/SOURCES.txt
+agentic_ai_project.egg-info/dependency_links.txt
+agentic_ai_project.egg-info/requires.txt
+agentic_ai_project.egg-info/top_level.txt
+tests/test_config.py
+tests/test_genai_client.py

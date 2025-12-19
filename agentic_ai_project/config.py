@@ -8,6 +8,8 @@ from typing import Optional
 
 from dotenv import load_dotenv
 
+from .validation import validate_model_name, validate_non_empty_string
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -41,8 +43,11 @@ def get_settings() -> Settings:
     api_key = os.getenv("GENAI_API_KEY")
     if not api_key:
         raise RuntimeError("GENAI_API_KEY is required to contact the GenAI service.")
+    api_key = validate_non_empty_string(api_key, "GENAI_API_KEY")
 
     model = os.getenv("GENAI_MODEL", "models/gemini-1.5-flash")
+    model = validate_model_name(model)
+
     log_level = os.getenv("LOG_LEVEL", "INFO")
     return Settings(api_key=api_key, model=model, log_level=log_level)
 

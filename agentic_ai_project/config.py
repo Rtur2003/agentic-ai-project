@@ -8,9 +8,6 @@ from typing import Optional
 
 from dotenv import load_dotenv
 
-# Load environment variables early so downstream imports see them.
-load_dotenv()
-
 
 @dataclass(frozen=True)
 class Settings:
@@ -22,7 +19,6 @@ class Settings:
 def _resolve_log_level(level: Optional[str]) -> int:
     if not level:
         return logging.INFO
-    # Tolerate numeric or string levels; avoid over-engineering a mapping table.
     try:
         return int(level)
     except ValueError:
@@ -41,9 +37,9 @@ def configure_logging(level: Optional[str] = None) -> logging.Logger:
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
+    load_dotenv()
     api_key = os.getenv("GENAI_API_KEY")
     if not api_key:
-        # Fail fast to avoid silent network calls with missing credentials. @Rtur2003
         raise RuntimeError("GENAI_API_KEY is required to contact the GenAI service.")
 
     model = os.getenv("GENAI_MODEL", "models/gemini-1.5-flash")
